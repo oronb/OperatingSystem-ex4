@@ -1,0 +1,71 @@
+main thread created all producer threads
+main thread created all consumer threads
+producer #2:  adding product 27089
+producer #1:  adding product 46129
+producer #2:  adding product 31753
+producer #1:  adding product 69133
+producer #2:  adding product 26123
+producer #1:  adding product 13837
+producer #2:  adding product 20711
+producer #1:  adding product 35909
+producer #2:  adding product 43657
+consumer #1 just got item (status UNDONE): 43657
+consumer #2 just got item (status UNDONE): 35909
+producer #2:  adding product 70027
+consumer #4 just got item (status UNDONE): 70027
+producer #1:  adding product 21473
+consumer #1 just got item (status UNDONE): 21473
+consumer #1 just got item (status UNDONE): 20711
+consumer #2 just got item (status UNDONE): 13837
+consumer #4 just got item (status UNDONE): 26123
+consumer #4 just got item (status UNDONE): 69133
+consumer #3 just got item (status UNDONE): 31753
+producer #1:  adding product 51917
+consumer #1 just got item (status UNDONE): 51917
+consumer #2 just got item (status UNDONE): 46129
+producer #1:  adding product 30523
+consumer #4 just got item (status UNDONE): 30523
+producer #2:  adding product 51379
+consumer #1 just got item (status UNDONE): 51379
+producer #1:  adding product 11639
+consumer #3 just got item (status UNDONE): 11639
+producer #2:  adding product 47053
+consumer #2 just got item (status UNDONE): 47053
+producer #1:  adding product 26219
+consumer #1 just got item (status UNDONE): 26219
+producer #2:  adding product 19493
+consumer #4 just got item (status UNDONE): 19493
+producer #1:  adding product 30227
+consumer #4 is done
+producer #1 is done
+consumer #2 just got item (status UNDONE): 30227
+producer #2:  adding product 20453
+consumer #2 is done
+producer #2 is done
+all producers terminated
+consumer #3 just got item (status UNDONE): 20453
+consumer #1 just got item (status UNDONE): 27089
+consumer #1 is done
+consumer #3 is done
+all consumers terminated
+main thread created all consumer threads
+product:  20453 =   113 X   181  status: = DONE
+product:  30227 =   167 X   181  status: = DONE
+product:  19493 =   101 X   193  status: = DONE
+product:  26219 =   157 X   167  status: = DONE
+product:  47053 =   211 X   223  status: = DONE
+product:  11639 =   103 X   113  status: = DONE
+product:  51379 =   191 X   269  status: = DONE
+product:  30523 =   131 X   233  status: = DONE
+product:  51917 =   193 X   269  status: = DONE
+product:  21473 =   109 X   197  status: = DONE
+product:  70027 =   239 X   293  status: = DONE
+product:  43657 =   149 X   293  status: = DONE
+product:  35909 =   149 X   241  status: = DONE
+product:  20711 =   139 X   149  status: = DONE
+product:  13837 =   101 X   137  status: = DONE
+product:  26123 =   151 X   173  status: = DONE
+product:  69133 =   257 X   269  status: = DONE
+product:  31753 =   113 X   281  status: = DONE
+product:  46129 =   163 X   283  status: = DONE
+product:  27089 =   103 X   263  status: = DONE
