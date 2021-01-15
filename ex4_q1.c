@@ -93,6 +93,7 @@ int main()
 
     create_producers(producers);
     create_consumers(consumers);
+    sleep(2);
     sem_post(sem_wait_all_thread_created);
 
     //Waiting for threads to finish
@@ -205,8 +206,6 @@ void create_item_with_lock(int* randNums, struct item** new_item, int* thread_nu
         update_new_item_fields(randNums, *new_item);
         printf("Before posting sem_num_of_items_create:%d\n",num_of_items_create);
         sem_post(sem_num_of_items_create);
-        sem_post(sem_num_of_items_create);
-
         sem_getvalue(sem_num_of_items_create, &test);
         printf("sem_num_of_items_create value:%d\n", test);
         sem_post(sem_count);
