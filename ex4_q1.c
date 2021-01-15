@@ -93,7 +93,7 @@ int main()
 
     create_producers(producers);
     create_consumers(consumers);
-    sleep(2);
+    sleep(4);
     sem_post(sem_wait_all_thread_created);
 
     //Waiting for threads to finish
@@ -183,6 +183,7 @@ void handle_getting_item(int * thread_num)
         }
         sem_post(sem_count);
         sem_wait(sem_count);
+        sem_getvalue(sem_num_of_proccessed_in_list, &num_of_proccessed_in_list);
     }
     sem_post(sem_count);
 
@@ -227,6 +228,7 @@ void check_and_wake_consumers()
 
     sem_wait(sem_count);
     sem_getvalue(sem_num_of_items_create, &num_of_items_create_val);
+    printf("in check_and_wake_consumers and num_of_items_create_val is:%d\n", num_of_items_create_val);
     if(num_of_items_create_val >= ITEM_START_CNT)
     {
         sem_post(sem_wait_for_all_items);
@@ -245,7 +247,9 @@ void check_and_wake_consumers()
 
 void wait_for_enough_items_in_list()
 {
+    printf("B1\n");
     sem_wait(sem_wait_for_all_items);
+    printf("B2\n");
     sem_post(sem_wait_for_all_items);
     /*while(num_of_messages_in_list < ITEM_START_CNT)
     {
@@ -258,10 +262,12 @@ void wait_if_no_items_to_handle()
 {
     int num_of_messages_in_list = 0;
     int num_of_proccessed_in_list = 0;
+    int num_of_items_create = 0;
 
     sem_wait(sem_count);
     sem_getvalue(sem_num_of_messages_in_list, &num_of_messages_in_list);
-    sem_getvalue(sem_num_of_items_create, &num_of_proccessed_in_list);
+    sem_getvalue(sem_num_of_proccessed_in_list, &num_of_proccessed_in_list);
+    sem_getvalue(sem_num_of_items_create, &num_of_items_create);
     while(num_of_proccessed_in_list == num_of_messages_in_list && num_of_proccessed_in_list < TOTAL_ITEMS)
     {
         sem_post(sem_count);
@@ -269,7 +275,8 @@ void wait_if_no_items_to_handle()
         sem_post(sem_wait_if_no_item_to_handle);
         sem_wait(sem_count);
         sem_getvalue(sem_num_of_messages_in_list, &num_of_messages_in_list);
-        sem_getvalue(sem_num_of_items_create, &num_of_proccessed_in_list);
+        sem_getvalue(sem_num_of_proccessed_in_list, &num_of_proccessed_in_list);
+        sem_getvalue(sem_num_of_items_create, &num_of_items_create);
     }
     sem_post(sem_count);
 }
@@ -435,9 +442,9 @@ void open_all_sem()
     sem_init(sem_print, 0, SEM_BINARY);
     sem_init(sem_count, 0, SEM_BINARY);
 
-    sem_init(sem_wait_all_thread_created,0, SEM_BINARY);
-    sem_init(sem_wait_for_all_items, 0, SEM_BINARY);
-    sem_init(sem_wait_if_no_item_to_handle, 0, SEM_BINARY);
+    sem_init(sem_wait_all_thread_created,0, 0);
+    sem_init(sem_wait_for_all_items, 0, 0);
+    sem_init(sem_wait_if_no_item_to_handle, 0, 0);
     sem_init(sem_num_of_messages_in_list, 0, 0);
     sem_init(sem_num_of_items_create, 0, 0);
     sem_init(sem_num_of_proccessed_in_list, 0, 0);

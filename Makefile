@@ -8,13 +8,14 @@ ECHO = echo "going to compile for target $@"
 PROG1 = ex4_q1
 PROGS = $(PROG1)
 
-all: $(PROGS) test
+all: $(PROG1)
+	./$(PROG1)
 
 $(PROG1): ex4_q1.o ex4_q1_given.o
 	$(CC) $(CFLAGS) ex4_q1_given.o ex4_q1.o -o $(PROG1) $(LDFLAGS)
 
-test: $(PROGS)
-	./$(PROG1) > out.log 2> err.log
+#test: $(PROGS)
+#	./$(PROG1) > out.log 2> err.log
 
 ex4_q1.o:  ex4_q1.h ex4_q1.c
 	$(CC) $(CFLAGS) -c ex4_q1.c $(LDFLAGS)
