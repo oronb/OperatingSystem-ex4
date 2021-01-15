@@ -82,11 +82,11 @@ int main()
     allocate_sem();
     open_all_sem();
 
-    sem_getvalue(&sem_list,&test);
+    sem_getvalue(sem_list,&test);
     printf("test_before_post:%d\n",test);
-    sem_post(&sem_list);
-    sem_post(&sem_list);
-    sem_getvalue(&sem_list,&test);
+    sem_post(sem_list);
+    sem_post(sem_list);
+    sem_getvalue(sem_list,&test);
     printf("test_after_post:%d\n",test);
 
     sleep(10);
