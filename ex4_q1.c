@@ -184,6 +184,7 @@ void handle_getting_item(int * thread_num)
         sem_post(sem_count);
         sem_wait(sem_count);
         sem_getvalue(sem_num_of_proccessed_in_list, &num_of_proccessed_in_list);
+	printf("$$num_of_proccessed_in_list:%d\n", num_of_proccessed_in_list);
     }
     sem_post(sem_count);
 
@@ -287,6 +288,7 @@ void get_and_handle_item_in_list(int* thread_num)
     write_getting_item_with_lock(thread_num,item_got);
     set_two_factors(item_got);
     item_got->status = DONE;
+    sem_post(sem_num_of_proccessed_in_list);
    // num_of_proccessed_in_list++;
 }
 
