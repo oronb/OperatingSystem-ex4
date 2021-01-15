@@ -13,12 +13,14 @@
 #include <string.h>
 #include <time.h>
 #include <signal.h>
+#include <semaphore.h>
+
 
 list_node* list_head;
 list_node* list_tail;
 
 void wait_for_threads_to_finish(pthread_t* threads, int num_of_threads);
-void wait_until_all_thread_created();
+//void wait_until_all_thread_created();
 void * producer(void *ptr);
 void * consumer(void *ptr);
 void handle_getting_item(int * thread_num);
@@ -42,10 +44,13 @@ void write_getting_item_with_lock(int * thread_num, struct item* item_got);
 void write_adding_item_with_lock(int * thread_num, struct item* new_item);
 
 //destory functions
-void destroy_mutex();
-void destroy_cond();
 void free_list();
+void close_semaphores();
+void unlink_semaphores();
 
 //creating threads functions
 void create_producers(pthread_t* producers);
 void create_consumers(pthread_t* consumers);
+
+void open_all_sem();
+

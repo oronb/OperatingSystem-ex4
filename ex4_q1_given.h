@@ -23,17 +23,14 @@
 #define N_PROD          2   // number of producer threads
 #define N_CONS          4   // number of consumer threads
 #define ITEM_START_CNT  8   // consumer threads start only after so items created
-#define TOTAL_ITEMS     20  // total number of messages to create
-
+#define TOTAL_ITEMS       20  // total number of messages to create
 // print constants
 #define ALL_PROD_CREATED "main thread created all producer threads\n"
 #define ALL_CONS_CREATED "main thread created all consumer threads\n"
 #define PROD_TERMINATED  "all producers terminated\n"
 #define CONS_TERMINATED  "all consumers terminated\n"
 
-#define SLEEP_FACTOR     100  // used by my_sleep
-#define REPORTER_FILE    "items.log"
-#define REPORTER_MSG    "<ITEM REPORTER> "
+#define SLEEP_FACTOR    100  // used by my_sleep
 
 // *** type declarations
 typedef unsigned uint;
@@ -56,6 +53,7 @@ struct list_node
 
 //  Extern for global variables
 extern list_node* list_head;
+extern list_node* list_tail;
 
 
 // *********** function prototypes ***********
@@ -71,7 +69,6 @@ item* get_undone_from_list();
 // function dealing with writing to stdout
 void write_adding_item(int thread_num, item*);
 void write_getting_item(int thread_num, item*);
-void print_one_item(item* item);
 void print_list();
 void write_producer_is_done(int thread_num);
 void write_consumer_is_done(int thread_num);
