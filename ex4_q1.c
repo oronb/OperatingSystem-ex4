@@ -82,14 +82,14 @@ int main()
     allocate_sem();
     open_all_sem();
 
-    sem_getvalue(sem_list,&test);
+    /*sem_getvalue(sem_list,&test);
     printf("test_before_post:%d\n",test);
     sem_post(sem_list);
     sem_post(sem_list);
     sem_getvalue(sem_list,&test);
-    printf("test_after_post:%d\n",test);
+    printf("test_after_post:%d\n",test);*/
 
-    sleep(10);
+   // sleep(10);
 
     create_producers(producers);
     create_consumers(consumers);
@@ -130,7 +130,7 @@ void * producer(void *ptr)
     sem_post(sem_wait_all_thread_created);
     int randNums[2];
     struct item* new_item = NULL;
-
+    printf("A1");
     sem_wait(sem_count);
     sem_getvalue(sem_num_of_items_create, &num_of_items_create);
     printf("num_of_items_create:%d\n",num_of_items_create);
