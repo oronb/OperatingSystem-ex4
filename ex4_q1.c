@@ -400,7 +400,7 @@ void close_semaphores()
 //=================================================================
 void open_all_sem()
 {
-    if (sem_unlink("/sem_wait_all_thread_created")==0)
+    /*if (sem_unlink("/sem_wait_all_thread_created")==0)
 	fprintf(stderr, "successul unlink of /sem_wait_all_thread_created\n");
 	sem_wait_all_thread_created = sem_open("/sem_wait_all_thread_created", O_CREAT, S_IRWXU, SEM_WAIT_ALL_THREAD_CREATED); 
 	if (sem_wait_all_thread_created == SEM_FAILED)
@@ -490,6 +490,7 @@ void open_all_sem()
 		perror("failed to open semaphore /sem_num_of_proccessed_in_list\n");
 		exit(EXIT_FAILURE);
 	}	
+    */
 }
 
 void unlink_semaphores()
