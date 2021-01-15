@@ -23,7 +23,7 @@ int num_of_proccessed_in_list=0;
 
 //---------------------------------
 // binary semaphores as global variables
-sem_t sem_list;
+sem_t* sem_list;
 sem_t* sem_rand;
 sem_t* sem_print;
 sem_t* sem_count;
@@ -43,15 +43,45 @@ void wait_for_threads_to_finish(pthread_t* threads, int num_of_threads)
     }
 }
 
+void allocate_sem()
+{
+    sem_list = (sem_t*)malloc(sizeof(sem_t));
+    sem_rand = (sem_t*)malloc(sizeof(sem_t));
+    sem_print = (sem_t*)malloc(sizeof(sem_t));
+    sem_count = (sem_t*)malloc(sizeof(sem_t));
+
+    sem_wait_all_thread_created = (sem_t*)malloc(sizeof(sem_t));
+    sem_wait_for_all_items = (sem_t*)malloc(sizeof(sem_t));
+    sem_wait_if_no_item_to_handle = (sem_t*)malloc(sizeof(sem_t));
+    sem_num_of_messages_in_list = (sem_t*)malloc(sizeof(sem_t));
+    sem_num_of_items_create = (sem_t*)malloc(sizeof(sem_t));
+    sem_num_of_proccessed_in_list = (sem_t*)malloc(sizeof(sem_t));            
+}
+
+void free_sem()
+{
+    free(sem_list);
+    free(sem_rand);
+    free(sem_print);
+    free(sem_count);
+
+    free(sem_wait_all_thread_created);
+    free(sem_wait_for_all_items);
+    free(sem_wait_if_no_item_to_handle);
+    free(sem_num_of_messages_in_list);
+    free(sem_num_of_items_create);
+    free(sem_num_of_proccessed_in_list);
+}
 
 int main()
 {
-    printf("A1\n");
     pthread_t producers[N_PROD];
     pthread_t consumers[N_CONS];
-   //open_all_sem();
-    sem_init(&sem_list,0, 10);
     int test;
+
+    allocate_sem();
+    open_all_sem();
+
     sem_getvalue(&sem_list,&test);
     printf("test_before_post:%d\n",test);
     sem_post(&sem_list);
@@ -78,6 +108,7 @@ int main()
     printf(PROD_TERMINATED);
     printf(CONS_TERMINATED);
 
+    free_sem();
     free_list();
 
 }
@@ -400,6 +431,18 @@ void close_semaphores()
 //=================================================================
 void open_all_sem()
 {
+    sem_init(sem_list,0, 10);
+    sem_init(sem_rand, 0, 0);
+    sem_init(sem_print, 0, 0);
+    sem_init(sem_count, 0, 0);
+
+    sem_init(sem_wait_all_thread_created,0, 10);
+    sem_init(sem_wait_for_all_items, 0, 0);
+    sem_init(sem_wait_if_no_item_to_handle, 0, 0);
+    sem_init(sem_num_of_messages_in_list, 0, 0);
+    sem_init(sem_num_of_items_create, 0, 0);
+    sem_init(sem_num_of_proccessed_in_list, 0, 0);
+
     /*if (sem_unlink("/sem_wait_all_thread_created")==0)
 	fprintf(stderr, "successul unlink of /sem_wait_all_thread_created\n");
 	sem_wait_all_thread_created = sem_open("/sem_wait_all_thread_created", O_CREAT, S_IRWXU, SEM_WAIT_ALL_THREAD_CREATED); 

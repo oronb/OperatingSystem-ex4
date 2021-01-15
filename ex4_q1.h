@@ -47,10 +47,13 @@ void write_adding_item_with_lock(int * thread_num, struct item* new_item);
 void free_list();
 void close_semaphores();
 void unlink_semaphores();
+void free_sem();
+
 
 //creating threads functions
 void create_producers(pthread_t* producers);
 void create_consumers(pthread_t* consumers);
 
+void allocate_sem();
 void open_all_sem();
 
