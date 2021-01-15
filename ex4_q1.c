@@ -431,14 +431,14 @@ void close_semaphores()
 //=================================================================
 void open_all_sem()
 {
-    sem_init(sem_list,0, 10);
-    sem_init(sem_rand, 0, 0);
-    sem_init(sem_print, 0, 0);
-    sem_init(sem_count, 0, 0);
+    sem_init(sem_list,0, SEM_BINARY);
+    sem_init(sem_rand, 0, SEM_BINARY);
+    sem_init(sem_print, 0, SEM_BINARY);
+    sem_init(sem_count, 0, SEM_BINARY);
 
-    sem_init(sem_wait_all_thread_created,0, 10);
-    sem_init(sem_wait_for_all_items, 0, 0);
-    sem_init(sem_wait_if_no_item_to_handle, 0, 0);
+    sem_init(sem_wait_all_thread_created,0, SEM_BINARY);
+    sem_init(sem_wait_for_all_items, 0, SEM_BINARY);
+    sem_init(sem_wait_if_no_item_to_handle, 0, SEM_BINARY);
     sem_init(sem_num_of_messages_in_list, 0, 0);
     sem_init(sem_num_of_items_create, 0, 0);
     sem_init(sem_num_of_proccessed_in_list, 0, 0);
