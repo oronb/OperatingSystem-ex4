@@ -1,8 +1,7 @@
 #include "ex4_q1.h"
 
 //---------------------------------
-// *** SEMAPHORES
-#define SEM_BINARY 1
+
 
 //---------------------------------
 // binary semaphores as global variables
@@ -200,7 +199,6 @@ void wait_if_no_items_to_handle()
 {
     int num_of_messages_in_list = 0;
     int num_of_proccessed_in_list = 0;
-    int num_of_items_create = 0;
 
     sem_wait(sem_count);
     sem_getvalue(sem_num_of_messages_in_list, &num_of_messages_in_list);
