@@ -418,16 +418,28 @@ void create_consumers(pthread_t* consumers)
 
 void close_semaphores()
 {
-    sem_close(sem_wait_all_thread_created);
     sem_close(sem_list);
     sem_close(sem_rand);
     sem_close(sem_print);
+    sem_close(sem_count);
+
+    sem_close(sem_wait_all_thread_created);
     sem_close(sem_wait_for_all_items);
     sem_close(sem_wait_if_no_item_to_handle);
     sem_close(sem_num_of_messages_in_list);
     sem_close(sem_num_of_items_create);
     sem_close(sem_num_of_proccessed_in_list);
 }
+
+
+// conditional semaphores as global variables
+sem_t* sem_wait_all_thread_created;
+sem_t* sem_wait_for_all_items;
+sem_t* sem_wait_if_no_item_to_handle;
+sem_t* sem_num_of_messages_in_list; //Num of items in list
+sem_t* sem_num_of_items_create;
+sem_t* sem_num_of_proccessed_in_list;
+
 
 //=================================================================
 void open_all_sem()
