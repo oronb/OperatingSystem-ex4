@@ -91,7 +91,6 @@ int main()
     pipe(pip);
     handle_item_reporter();
     close(pip[0]);
-    sleep(4);
     sem_post(sem_wait_all_thread_created);
 
     //Waiting for threads to finish
@@ -104,7 +103,7 @@ int main()
     printf(PROD_TERMINATED);
     printf(CONS_TERMINATED);
 
-    //free_sem();
+    free_sem();
     //free_list();
 
 }
