@@ -94,6 +94,9 @@ int main()
 
     create_producers(producers);
     create_consumers(consumers);
+    int pip[2];
+    pipe(pip);
+    close(pip[0]);
     handle_item_reporter();
     sleep(4);
     sem_post(sem_wait_all_thread_created);
@@ -156,9 +159,7 @@ void * producer(void *ptr)
 
 void * consumer(void *ptr)
 {
-    int pip[2];
-    pipe(pip);
-    close(pip[0]);
+
 
     int * thread_num = (int*) ptr;
     wait_for_enough_items_in_list();

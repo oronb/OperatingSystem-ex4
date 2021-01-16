@@ -23,13 +23,13 @@ void wait_for_threads_to_finish(pthread_t* threads, int num_of_threads);
 //void wait_until_all_thread_created();
 void * producer(void *ptr);
 void * consumer(void *ptr);
-void handle_getting_item(int * thread_num, int* pip);
+void handle_getting_item(int * thread_num);
 void update_new_item_fields(int* randNums, struct item* new_item);
 void create_item_with_lock(int* randNums, struct item** new_item, int* thread_num);
 void check_and_wake_consumers();
 void wait_for_enough_items_in_list();
 void wait_if_no_items_to_handle();
-void get_and_handle_item_in_list(int* thread_num, int* pip);
+void get_and_handle_item_in_list(int* thread_num);
 void adding_item_to_list_with_lock(int* thread_num, struct item* new_item);
 void getting_random_numbers(int* randNums);
 
