@@ -104,8 +104,8 @@ int main()
     printf(PROD_TERMINATED);
     printf(CONS_TERMINATED);
 
-    free_sem();
-    free_list();
+    //free_sem();
+    //free_list();
 
 }
 
