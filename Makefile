@@ -15,6 +15,9 @@ all: $(PROG1) $(PROG2)
 $(PROG1): ex4_q1.o ex4_q1_given.o
 	$(CC) $(CFLAGS) ex4_q1_given.o ex4_q1.o -o $(PROG1) $(LDFLAGS)
 
+$(PROG2): item_reporter.o ex4_q1_given.o
+	$(CC) $(CFLAGS) ex4_q1_given.o item_reporter.o -o $(PROG2) $(LDFLAGS)
+
 #test: $(PROGS)
 #	./$(PROG1) > out.log 2> err.log
 
