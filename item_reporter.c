@@ -1,5 +1,8 @@
 #include "item_reporter.h"
 
+list_node* list_head;
+list_node* list_tail;
+
 int main()
 {
     int ret;
