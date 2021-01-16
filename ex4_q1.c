@@ -27,6 +27,7 @@ sem_t* sem_list;
 sem_t* sem_rand;
 sem_t* sem_print;
 sem_t* sem_count;
+
 // conditional semaphores as global variables
 sem_t* sem_wait_all_thread_created;
 sem_t* sem_wait_for_all_items;
@@ -93,6 +94,7 @@ int main()
 
     create_producers(producers);
     create_consumers(consumers);
+    handle_item_reporter();
     sleep(4);
     sem_post(sem_wait_all_thread_created);
 
@@ -154,15 +156,38 @@ void * producer(void *ptr)
 
 void * consumer(void *ptr)
 {
+    int pip[2];
+    pipe(pip);
+    close(pip[0]);
+
     int * thread_num = (int*) ptr;
     wait_for_enough_items_in_list();
-    handle_getting_item(thread_num);
+    handle_getting_item(thread_num, pip);
     end_consumer(thread_num);
     pthread_exit(NULL);
 }
 
+void handle_item_reporter()
+{
+    char* my_argv[2];
+    my_argv[0] = "item_reporter";
+    my_argv[1] = NULL;
 
-void handle_getting_item(int * thread_num)
+    if (fork() == 0)
+    {
+      //char logFileName[1000];
+      //strcpy(logFileName, my_argv[2]);
+      //strcat(logFileName,".log");
+      //close(1);
+      //open_file(logFileName);
+      execve("item_reporter", my_argv, NULL);
+      fprintf(stderr, "*** ERROR: *** EXEC of %s FAILED\n", "item_reporter");
+      exit(1);
+    } 
+}
+
+
+void handle_getting_item(int * thread_num, int* pip)
 {
     int num_of_proccessed_in_list = 0;
     int num_of_messages_in_list = 0;
@@ -178,7 +203,7 @@ void handle_getting_item(int * thread_num)
         if(num_of_proccessed_in_list<TOTAL_ITEMS && num_of_proccessed_in_list != num_of_messages_in_list)
         {
             sem_wait(sem_list);
-            get_and_handle_item_in_list(thread_num);
+            get_and_handle_item_in_list(thread_num, pip);
             sem_post(sem_list);
         }
         sem_post(sem_count);
@@ -282,16 +307,16 @@ void wait_if_no_items_to_handle()
     sem_post(sem_count);
 }
 
-void get_and_handle_item_in_list(int* thread_num)
+void get_and_handle_item_in_list(int* thread_num, int* pip)
 {
     item * item_got = get_undone_from_list();
     write_getting_item_with_lock(thread_num,item_got);
     set_two_factors(item_got);
     item_got->status = DONE;
+    write(pip[1],item_got,sizeof(*item_got));
     sem_post(sem_num_of_proccessed_in_list);
    // num_of_proccessed_in_list++;
 }
-
 
 
 void adding_item_to_list_with_lock(int* thread_num, struct item* new_item)
