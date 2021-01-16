@@ -83,7 +83,7 @@ int main()
 
     unlink_semaphores();
 
-    allocate_sem();
+    //allocate_sem();
     open_all_sem();
 
     create_producers(producers);
@@ -103,8 +103,8 @@ int main()
     printf(PROD_TERMINATED);
     printf(CONS_TERMINATED);
 
-    free_sem();
-    //free_list();
+   // free_sem();
+    free_list();
 
 }
 
