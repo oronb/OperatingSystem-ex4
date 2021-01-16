@@ -1,9 +1,6 @@
 #include "ex4_q1.h"
 
 //---------------------------------
-
-
-//---------------------------------
 // binary semaphores as global variables
 sem_t* sem_list;
 sem_t* sem_rand;
