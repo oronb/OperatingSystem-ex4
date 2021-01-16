@@ -82,17 +82,10 @@ int main()
     pthread_t consumers[N_CONS];
     int test;
 
+    unlink_semaphores();
+
     allocate_sem();
     open_all_sem();
-
-    /*sem_getvalue(sem_list,&test);
-    printf("test_before_post:%d\n",test);
-    sem_post(sem_list);
-    sem_post(sem_list);
-    sem_getvalue(sem_list,&test);
-    printf("test_after_post:%d\n",test);*/
-
-   // sleep(10);
 
     create_producers(producers);
     create_consumers(consumers);
@@ -108,9 +101,6 @@ int main()
 
     print_list();
     close_semaphores();
-    unlink_semaphores();
-    //destroy_mutex();
-    //destroy_cond();
 
     printf(PROD_TERMINATED);
     printf(CONS_TERMINATED);
@@ -137,10 +127,8 @@ void * producer(void *ptr)
     sem_post(sem_wait_all_thread_created);
     int randNums[2];
     struct item* new_item = NULL;
-    printf("A1");
     sem_wait(sem_count);
     sem_getvalue(sem_num_of_items_create, &num_of_items_create);
-    printf("num_of_items_create:%d\n",num_of_items_create);
     while(num_of_items_create < TOTAL_ITEMS)
     {
         sem_post(sem_count);
@@ -149,7 +137,6 @@ void * producer(void *ptr)
         adding_item_to_list_with_lock(thread_num, new_item);
         sem_wait(sem_count);
         sem_getvalue(sem_num_of_items_create, &num_of_items_create);
-        printf("num_of_items_create:%d\n",num_of_items_create);
     }
     sem_post(sem_count);
     end_producer(thread_num); 
@@ -177,11 +164,6 @@ void handle_item_reporter()
 
     if (fork() == 0)
     {
-      //char logFileName[1000];
-      //strcpy(logFileName, my_argv[2]);
-      //strcat(logFileName,".log");
-      //close(1);
-      //open_file(logFileName);
       close(0);
       dup(pip[0]);
       close(pip[1]);
@@ -214,7 +196,6 @@ void handle_getting_item(int * thread_num)
         sem_post(sem_count);
         sem_wait(sem_count);
         sem_getvalue(sem_num_of_proccessed_in_list, &num_of_proccessed_in_list);
-	printf("$$num_of_proccessed_in_list:%d\n", num_of_proccessed_in_list);
     }
     sem_post(sem_count);
 
@@ -236,10 +217,8 @@ void create_item_with_lock(int* randNums, struct item** new_item, int* thread_nu
     {
         *new_item = (struct item*) malloc(sizeof(struct item));
         update_new_item_fields(randNums, *new_item);
-        printf("Before posting sem_num_of_items_create:%d\n",num_of_items_create);
         sem_post(sem_num_of_items_create);
         sem_getvalue(sem_num_of_items_create, &test);
-        printf("sem_num_of_items_create value:%d\n", test);
         sem_post(sem_count);
     }
     else
@@ -259,7 +238,6 @@ void check_and_wake_consumers()
 
     sem_wait(sem_count);
     sem_getvalue(sem_num_of_items_create, &num_of_items_create_val);
-    printf("in check_and_wake_consumers and num_of_items_create_val is:%d\n", num_of_items_create_val);
     if(num_of_items_create_val >= ITEM_START_CNT)
     {
         sem_post(sem_wait_for_all_items);
@@ -278,15 +256,8 @@ void check_and_wake_consumers()
 
 void wait_for_enough_items_in_list()
 {
-    printf("B1\n");
     sem_wait(sem_wait_for_all_items);
-    printf("B2\n");
     sem_post(sem_wait_for_all_items);
-    /*while(num_of_messages_in_list < ITEM_START_CNT)
-    {
-        pthread_cond_wait(&count_nodes_added_to_list, &mtx_count);
-    }*/
-
 }
 
 void wait_if_no_items_to_handle()
@@ -428,12 +399,9 @@ void create_producers(pthread_t* producers)
     //Creating producer threads
     for(int i=0; i < N_PROD; i++)
     {
-       // sleep(1);
-        printf("Creating producer:%d\n", i);
         int * thread_num = malloc(sizeof(int));
         *thread_num = i+1;
         pthread_create( &(producers[i]), NULL, producer, thread_num);
-        //num_of_threads_created++;
     }
     printf(ALL_PROD_CREATED);
 }
@@ -443,12 +411,9 @@ void create_consumers(pthread_t* consumers)
     //Creating consumer threads
     for(int i=0; i < N_CONS; i++)
     {
-       // sleep(1);
-        printf("Create consumer:%d\n", i);
         int * thread_num = malloc(sizeof(int));
         *thread_num = i+1;
         pthread_create( &(consumers[i]), NULL, consumer, thread_num);
-        //num_of_threads_created++;
     }
     printf(ALL_CONS_CREATED);
 }
@@ -481,8 +446,8 @@ void open_all_sem()
     sem_init(sem_num_of_items_create, 0, 0);
     sem_init(sem_num_of_proccessed_in_list, 0, 0);
 
-    /*if (sem_unlink("/sem_wait_all_thread_created")==0)
-	fprintf(stderr, "successul unlink of /sem_wait_all_thread_created\n");
+    if (sem_unlink("/sem_wait_all_thread_created")==0)
+	    fprintf(stderr, "successul unlink of /sem_wait_all_thread_created\n");
 	sem_wait_all_thread_created = sem_open("/sem_wait_all_thread_created", O_CREAT, S_IRWXU, SEM_WAIT_ALL_THREAD_CREATED); 
 	if (sem_wait_all_thread_created == SEM_FAILED)
 	{
@@ -518,7 +483,7 @@ void open_all_sem()
 	}	
 
     if (sem_unlink("/sem_wait_for_all_items")==0)
-	fprintf(stderr, "successul unlink of /sem_wait_for_all_items\n");
+	    fprintf(stderr, "successul unlink of /sem_wait_for_all_items\n");
 	sem_wait_for_all_items = sem_open("/sem_wait_for_all_items", O_CREAT, S_IRWXU, 0); 
 	if (sem_wait_for_all_items == SEM_FAILED)
 	{
@@ -527,7 +492,7 @@ void open_all_sem()
 	}	
 
     if (sem_unlink("/sem_wait_if_no_item_to_handle")==0)
-	fprintf(stderr, "successul unlink of /sem_wait_if_no_item_to_handle\n");
+	    fprintf(stderr, "successul unlink of /sem_wait_if_no_item_to_handle\n");
 	sem_wait_if_no_item_to_handle = sem_open("/sem_wait_if_no_item_to_handle", O_CREAT, S_IRWXU, 0); 
 	if (sem_wait_if_no_item_to_handle == SEM_FAILED)
 	{
@@ -536,7 +501,7 @@ void open_all_sem()
 	}	
 
     if (sem_unlink("/sem_count")==0)
-	fprintf(stderr, "successul unlink of /sem_count\n");
+	    fprintf(stderr, "successul unlink of /sem_count\n");
 	sem_count = sem_open("/sem_count", O_CREAT, S_IRWXU, SEM_BINARY); 
 	if (sem_count == SEM_FAILED)
 	{
@@ -546,7 +511,7 @@ void open_all_sem()
 
 
     if (sem_unlink("/sem_num_of_items_create")==0)
-	fprintf(stderr, "successul unlink of /sem_num_of_items_create\n");
+	    fprintf(stderr, "successul unlink of /sem_num_of_items_create\n");
 	sem_num_of_items_create = sem_open("/sem_num_of_items_create", O_CREAT, S_IRWXU, 0); 
 	if (sem_num_of_items_create == SEM_FAILED)
 	{
@@ -555,7 +520,7 @@ void open_all_sem()
 	}	
 
     if (sem_unlink("/sem_num_of_messages_in_list")==0)
-	fprintf(stderr, "successul unlink of /sem_num_of_messages_in_list\n");
+	    fprintf(stderr, "successul unlink of /sem_num_of_messages_in_list\n");
 	sem_num_of_messages_in_list = sem_open("/sem_num_of_messages_in_list", O_CREAT, S_IRWXU, 0); 
 	if (sem_num_of_messages_in_list == SEM_FAILED)
 	{
@@ -564,22 +529,22 @@ void open_all_sem()
 	}		
 
     if (sem_unlink("/sem_num_of_proccessed_in_list")==0)
-	fprintf(stderr, "successul unlink of /sem_num_of_proccessed_in_list\n");
+	    fprintf(stderr, "successul unlink of /sem_num_of_proccessed_in_list\n");
 	sem_num_of_proccessed_in_list = sem_open("/sem_num_of_proccessed_in_list", O_CREAT, S_IRWXU, 0); 
 	if (sem_num_of_proccessed_in_list == SEM_FAILED)
 	{
 		perror("failed to open semaphore /sem_num_of_proccessed_in_list\n");
 		exit(EXIT_FAILURE);
 	}	
-    */
+    
 }
 
 void unlink_semaphores()
 {
-    char* sem[] ={"/sem_wait_all_thread_created", "/sem_list", "/sem_rand", "/sem_print", "sem_wait_for_all_items", "sem_wait_if_no_item_to_handle","sem_num_of_messages_in_list","sem_num_of_items_create","sem_num_of_proccessed_in_list"};
+    char* sem[] ={"/sem_list", "/sem_rand", "/sem_print", "sem_count", "/sem_wait_all_thread_created", "sem_wait_for_all_items", "sem_wait_if_no_item_to_handle","sem_num_of_messages_in_list","sem_num_of_items_create","sem_num_of_proccessed_in_list"};
 	int i;
 	printf("going to unlink semaphores..\n");	
-	for (i=0; i<3; i++)
+	for (i=0; i<10; i++)
 		if (sem_unlink(sem[i])==0)
 			fprintf(stderr, "successul unlink of %s\n", sem[i]);
 }
