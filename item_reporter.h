@@ -12,3 +12,4 @@
 #include <semaphore.h>
 #include "ex4_q1_given.h"
 
+int open_file(char* name);
