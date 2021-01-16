@@ -305,7 +305,6 @@ void write_adding_item_with_lock(int * thread_num, struct item* new_item)
 }
 
 //destory functions
-
 void free_list()
 {
     struct list_node* currNode = list_head;
@@ -358,16 +357,6 @@ void close_semaphores()
     sem_close(sem_num_of_items_create);
     sem_close(sem_num_of_proccessed_in_list);
 }
-
-
-// conditional semaphores as global variables
-sem_t* sem_wait_all_thread_created;
-sem_t* sem_wait_for_all_items;
-sem_t* sem_wait_if_no_item_to_handle;
-sem_t* sem_num_of_messages_in_list; //Num of items in list
-sem_t* sem_num_of_items_create;
-sem_t* sem_num_of_proccessed_in_list;
-
 
 //=================================================================
 void open_all_sem()
