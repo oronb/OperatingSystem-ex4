@@ -1,5 +1,4 @@
 
-// #include "ex4_q1.h"
 #include "ex4_q1_given.h"
 
 
@@ -88,8 +87,6 @@ void add_to_list (item* item)
   }
 }
 
-  
-
 //------------------------------------------------------------------------
 item* get_undone_from_list()
 {
@@ -107,24 +104,29 @@ item* get_undone_from_list()
   }
   return NULL;
 }
+
+//------------------------------------------------------------------------
+void print_one_item(item* item)
+{
+  char status[20];
+  switch (item->status)
+  {
+    case NOT_DONE:    sprintf(status, "NOT DONE"); break;
+    case PROCESSING:  sprintf(status, "PROCESSING"); break;
+    case DONE:        sprintf(status, "DONE"); break;
+  }
+  printf("product: %6d = %5d X %5d  status: = %s\n",
+          item->prod, item-> n1, item->n2, status);
+  fflush(stdout);
+}
+
 //------------------------------------------------------------------------
 void print_list()
 {
   list_node* run = list_head;
-  item* item;
-  char status[20];
   while(run)
   {
-    item = run->item;
-    switch (item->status)
-    {
-      case NOT_DONE:    sprintf(status, "NOT DONE"); break;
-      case PROCESSING:  sprintf(status, "PROCESSING"); break;
-      case DONE:        sprintf(status, "DONE"); break;
-    }
-    printf("product: %6d = %5d X %5d  status: = %s\n",
-            item->prod, item-> n1, item->n2, status);
-    fflush(stdout);
+    print_one_item(run->item);
     run = run->next;
   }
 }
@@ -153,6 +155,7 @@ void write_is_done(char* who, int thread_num)
   fflush(stdout);
   my_sleep();
   printf("is done\n");
+  fflush(stdout);
 }
 
 //------------------------------------------------------------------------
@@ -171,7 +174,8 @@ void write_consumer_is_done(int thread_num)
 //------------------------------------------------------------------------
 void my_sleep()
 {
-  const struct timespec ts = {0, 1000 * 100 * SLEEP_FACTOR};
+  int factor = (pthread_self() % 3 + 1) * SLEEP_FACTOR;
+  const struct timespec ts = {0, 1000 * 100 * factor};
   nanosleep(&ts, NULL);
 }
 
