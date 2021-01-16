@@ -11,7 +11,7 @@ int main()
         {
             exit(0);
         }
-        printf(REPORTER_MSG , "  ");
+        printf("%s ",REPORTER_MSG);
         print_one_item(&itemGiven);
     }
 }
