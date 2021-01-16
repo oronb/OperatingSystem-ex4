@@ -16,6 +16,6 @@ int main()
             exit(0);
         }
         printf("@@@prod%d\n\n",itemGiven.prod);
-        sleep(10);
+        //sleep(10);
     }
 }
