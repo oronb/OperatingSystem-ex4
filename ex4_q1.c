@@ -80,7 +80,6 @@ int main()
 {
     pthread_t producers[N_PROD];
     pthread_t consumers[N_CONS];
-    int test;
 
     unlink_semaphores();
 
