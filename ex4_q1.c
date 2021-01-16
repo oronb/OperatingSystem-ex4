@@ -263,7 +263,7 @@ void check_and_wake_consumers()
 
     sem_wait(sem_count);
     sem_getvalue(sem_num_of_items_create, &num_of_messages_in_list);
-    sem_getvalue(sem_num_of_items_create, &num_of_proccessed_in_list);
+    sem_getvalue(sem_num_of_proccessed_in_list, &num_of_proccessed_in_list);
     if(num_of_messages_in_list != num_of_proccessed_in_list)
     {
         sem_post(sem_wait_if_no_item_to_handle);
