@@ -36,6 +36,8 @@ sem_t* sem_num_of_messages_in_list; //Num of items in list
 sem_t* sem_num_of_items_create;
 sem_t* sem_num_of_proccessed_in_list;
 
+int pip[2];
+
 void wait_for_threads_to_finish(pthread_t* threads, int num_of_threads)
 {
     for(int i=0; i < num_of_threads; i++)
@@ -94,10 +96,9 @@ int main()
 
     create_producers(producers);
     create_consumers(consumers);
-    int pip[2];
     pipe(pip);
-    close(pip[0]);
     handle_item_reporter();
+    close(pip[0]);
     sleep(4);
     sem_post(sem_wait_all_thread_created);
 
@@ -163,7 +164,7 @@ void * consumer(void *ptr)
 
     int * thread_num = (int*) ptr;
     wait_for_enough_items_in_list();
-    handle_getting_item(thread_num, pip);
+    handle_getting_item(thread_num);
     end_consumer(thread_num);
     pthread_exit(NULL);
 }
@@ -181,6 +182,9 @@ void handle_item_reporter()
       //strcat(logFileName,".log");
       //close(1);
       //open_file(logFileName);
+      close(0);
+      dup(pip[0]);
+      close(pip[1]);
       execve("item_reporter", my_argv, NULL);
       fprintf(stderr, "*** ERROR: *** EXEC of %s FAILED\n", "item_reporter");
       exit(1);
@@ -188,7 +192,7 @@ void handle_item_reporter()
 }
 
 
-void handle_getting_item(int * thread_num, int* pip)
+void handle_getting_item(int * thread_num)
 {
     int num_of_proccessed_in_list = 0;
     int num_of_messages_in_list = 0;
@@ -204,7 +208,7 @@ void handle_getting_item(int * thread_num, int* pip)
         if(num_of_proccessed_in_list<TOTAL_ITEMS && num_of_proccessed_in_list != num_of_messages_in_list)
         {
             sem_wait(sem_list);
-            get_and_handle_item_in_list(thread_num, pip);
+            get_and_handle_item_in_list(thread_num);
             sem_post(sem_list);
         }
         sem_post(sem_count);
@@ -308,7 +312,7 @@ void wait_if_no_items_to_handle()
     sem_post(sem_count);
 }
 
-void get_and_handle_item_in_list(int* thread_num, int* pip)
+void get_and_handle_item_in_list(int* thread_num)
 {
     item * item_got = get_undone_from_list();
     write_getting_item_with_lock(thread_num,item_got);
