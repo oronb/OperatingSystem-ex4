@@ -24,7 +24,6 @@ list_node* list_head;
 list_node* list_tail;
 
 void wait_for_threads_to_finish(pthread_t* threads, int num_of_threads);
-//void wait_until_all_thread_created();
 void * producer(void *ptr);
 void * consumer(void *ptr);
 void handle_getting_item(int * thread_num);
