@@ -15,5 +15,6 @@ int main()
             exit(0);
         }
         printf("@@@number 1:%d, number 2:%d\n\n",itemGiven.n1, itemGiven.n2);
+        sleep(10);
     }
 }
